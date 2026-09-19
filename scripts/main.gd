@@ -1,7 +1,11 @@
 extends Node
 
 @export var mob_scene: PackedScene
+var health: int
 var score
+@onready var lowPassFilter = AudioServer.get_bus_effect(1, 0)
+
+signal game_over_signal
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -11,8 +15,21 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func player_hit() -> void:
+	$HitSound.play()
+	health -= 1
+	$HUD.update_health(health)
+	if health <= 0:
+		game_over()
+	else: 
+		lowPassFilter.cutoff_hz = 300.0
+		await get_tree().create_timer(1.8).timeout
+		lowPassFilter.cutoff_hz = 20000
 
 func game_over() -> void:
+	$Player.game_over = true
+	$Player.hide()
+	$Player/CollisionShape2D.set_deferred("disabled", true)
 	$Music.stop()
 	$DeathSound.play()
 	$ScoreTimer.stop()
@@ -20,10 +37,13 @@ func game_over() -> void:
 	$HUD.show_game_over()
 
 func new_game():
+	$Player.game_over = false
 	get_tree().call_group("mobs", "queue_free")
 	score = 0
+	health = 3
 	$Player.start($StartPosition.position)
 	$HUD.update_score(score)
+	$HUD.update_health(health)
 	$HUD.show_message("Get Ready")
 	$StartTimer.start()
 	$Music.play()

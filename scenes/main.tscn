@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://d2uk1qeohs4tc" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://cd2cij1jxb26m" path="res://scenes/mob.tscn" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://d4metmvxaov50" path="res://scenes/hud.tscn" id="4_jyhfs"]
+[ext_resource type="AudioStream" uid="uid://bnr51j16ulvkw" path="res://art/hitHurt.wav" id="5_o6xl0"]
 [ext_resource type="AudioStream" uid="uid://bxjafrsokhkxn" path="res://art/gameover.wav" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://cr1x85737uyo1" path="res://scripts/camera_2d.gd" id="6_tefeu"]
 
 [sub_resource type="Curve2D" id="Curve2D_0wfyh"]
 _data = {
@@ -39,12 +41,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0.60632104, 0.6063209, 1)
+color = Color(0.60784316, 0.76862746, 0.972549, 1)
 
 [node name="Player" parent="." unique_id=277572792 instance=ExtResource("1_o5qli")]
+z_index = 1
 
 [node name="MobTimer" type="Timer" parent="." unique_id=1987431526]
-wait_time = 0.5
+wait_time = 0.4
 
 [node name="ScoreTimer" type="Timer" parent="." unique_id=232090540]
 
@@ -64,11 +67,26 @@ curve = SubResource("Curve2D_0wfyh")
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1738121525]
 stream = SubResource("AudioStreamOggVorbis_tefeu")
+bus = &"Music"
+
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1713932726]
+stream = ExtResource("5_o6xl0")
+volume_db = -1.14
+bus = &"Music"
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="." unique_id=2100595032]
 stream = ExtResource("5_tbgi4")
 
-[connection signal="hit" from="Player" to="." method="game_over"]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=220276689]
+limit_left = 0
+limit_top = 0
+limit_right = 480
+limit_bottom = 720
+script = ExtResource("6_tefeu")
+
+[connection signal="game_over_signal" from="." to="Player" method="_on_main_game_over_signal"]
+[connection signal="hit" from="Player" to="." method="player_hit"]
+[connection signal="hit" from="Player" to="Camera2D" method="_on_player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]

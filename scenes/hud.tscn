@@ -2,6 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://e531ybfay6ua" path="res://fonts/Xolonium-Regular.ttf" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://be8s2agw0ttih" path="res://scripts/hud.gd" id="1_oo0fn"]
+[ext_resource type="Texture2D" uid="uid://bca5t4175sxau" path="res://art/rayan/soul.png" id="3_5ysmq"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_tefeu"]
 action = &"start_game"
@@ -13,18 +14,19 @@ events = [SubResource("InputEventAction_tefeu")]
 script = ExtResource("1_oo0fn")
 
 [node name="ScoreLabel" type="Label" parent="." unique_id=1757645340]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -22.5
-offset_right = 22.5
-offset_bottom = 78.0
-grow_horizontal = 2
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 1.0
+offset_right = -27.0
+offset_bottom = 79.0
+grow_horizontal = 0
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("1_ahhtf")
 theme_override_font_sizes/font_size = 64
 text = "0"
-horizontal_alignment = 1
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Message" type="Label" parent="." unique_id=819822398]
@@ -68,6 +70,21 @@ text = "Start"
 [node name="MessageTimer" type="Timer" parent="." unique_id=1607098314]
 wait_time = 2.0
 one_shot = true
+
+[node name="Heart1" type="Sprite2D" parent="." unique_id=751422154]
+position = Vector2(35.000004, 40.75)
+scale = Vector2(0.18599999, 0.18599999)
+texture = ExtResource("3_5ysmq")
+
+[node name="Heart2" type="Sprite2D" parent="." unique_id=1690664845]
+position = Vector2(102, 40.75)
+scale = Vector2(0.18599999, 0.18599999)
+texture = ExtResource("3_5ysmq")
+
+[node name="Heart3" type="Sprite2D" parent="." unique_id=1908757458]
+position = Vector2(176.00002, 40.75)
+scale = Vector2(0.18599999, 0.18599999)
+texture = ExtResource("3_5ysmq")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]

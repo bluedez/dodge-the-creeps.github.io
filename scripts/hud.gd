@@ -29,6 +29,24 @@ func show_game_over():
 func update_score(score):
 	$ScoreLabel.text = str(score)
 
+func update_health(health):
+	match health:
+		0:
+			$Heart1.hide()
+			$Heart2.hide()
+			$Heart3.hide()
+		1:
+			$Heart1.show()
+			$Heart2.hide()
+			$Heart3.hide()
+		2:
+			$Heart1.show()
+			$Heart2.show()
+			$Heart3.hide()
+		3:
+			$Heart1.show()
+			$Heart2.show()
+			$Heart3.show()
 
 func show_message(text):
 	$Message.text = text
